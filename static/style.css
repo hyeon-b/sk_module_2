@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+h1, h3 {
+    text-align: center;
+}
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+}
+button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
