@@ -9,9 +9,9 @@
 <body>
     <h1>HELLO WORLD</h1>
     <h3>아래에 입력해주세요</h3>
-    <div class="input-container">
-        <input type="text" placeholder="입력">
-        <button>전송하기</button>
-    </div>
+    <form action="/submit" method="post"class="input-container">
+        <input type="text" name="user_input" placeholder="세션값을 입력해 공격해보자!">
+        <button type="submit">전송하기</button>
+    </form>
 </body>
 </html>
