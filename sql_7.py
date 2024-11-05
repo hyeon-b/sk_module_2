@@ -133,8 +133,8 @@ def get_data (table_name, column_name, data_count):
 # table_num = get_table_count()
 # table_name = get_table_name(table_num)
 
-colomn_num = get_column_count('ANSWER')
-column_name = get_coloumn_name(colomn_num, 'ANSWER')
+# colomn_num = get_column_count('ANSWER')
+# column_name = get_coloumn_name(colomn_num, 'ANSWER')
 
-data_num = get_data_count('ANSWER', 'ANSWER')
-data = get_data('ANSWER','ANSWER',data_num)
+# data_num = get_data_count('ANSWER', 'ANSWER')
+# data = get_data('ANSWER','ANSWER',data_num)
