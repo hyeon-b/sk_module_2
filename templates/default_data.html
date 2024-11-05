@@ -10,12 +10,14 @@
 </head>
 <body>
     <h1>BLIND SQL INJECTION</h1>
-    <h3>테이블 이름을 입력해주세요</h3>
-    <form action="/column" method="get"class="input-container">
+    <h3>테이블 이름과 컬럼 이름을 입력해주세요</h3>
+    <form action="/data" method="get"class="input-container">
         <input type="text" name="table_name" placeholder="테이블 이름">
+        <input type="text" name="column_name" placeholder="컬럼 이름">
         <button type="submit">시작</button>
     </form>
 
+    <br>
     <button onClick="location.href='/home'">홈</button>
 
 </body>

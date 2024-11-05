@@ -8,7 +8,7 @@ from tools.binarySearch import *
 
 app=Flask(__name__)
 api = Api(app)
-app.secret_key = "super secret key"
+app.secret_key = "flashkey"
 
 u = "https://elms1.skinfosec.co.kr:8082/community6/free"
 h = {
@@ -24,6 +24,11 @@ d = {
     "keyword":"EQST%' and (공격쿼리) and '1%'='1"
 }
 
+# ===============================================
+#
+#            ROUTER DEFINATION PART
+#
+# ===============================================
 
 @app.route("/")
 def index(): 
@@ -45,9 +50,7 @@ def submit():
 
 @app.route("/home", methods=['GET'])
 def home():
-    if not "jsessionid" in session:
-        flash("세션 id를 입력해야 합니다.")
-        return redirect("/")
+    check_set_session()
   
     return redirect("/select")
 
@@ -62,10 +65,13 @@ def select_data():
 def get_table():
     check_set_session()
 
+    # 테스트 데이터
+    table_count=6
+    table_name_list=['BOARD','COMM_FILE','COMM_MDI_FILE','MEMBER','ZIPCODE','ANSWER']
+
     # table_count = get_table_count()
-    table_count=2
     # table_name_list = get_table_name(table_count)
-    table_name_list=['BOARD','ANSWER']
+    
     return render_template("table_page.html", table_count=table_count, table_name_list=table_name_list)
 
 
@@ -77,10 +83,13 @@ def get_column():
     if table_name=='none':
         return render_template("default_column.html")
 
+    # 테스트 데이터
+    column_count = 1
+    column_name_list=['ANSWER']
+
     # column_count = get_column_count(table_name)
-    column_count = 5
     # column_name_list = get_coloumn_name(column_count, table_name)
-    column_name_list=['idx','title','veiw','writer','content']
+    
     return render_template("column_page.html",table_name=table_name, column_count=column_count, column_name_list=column_name_list)
 
 @app.route("/data", methods=['GET'])
@@ -90,12 +99,17 @@ def get_data():
     column_name = request.args.get('column_name','none')
 
     # data_count = get_data_count(table_name, column_name)
-    data_count=4
-    data_list=['asdf1','asdf2','asdf3','asdfasdf']
+    data_count=1
+    data_list=['ant6']
     # data_list = get_data(table_name, column_name, data_count)
     return render_template("data_page.html", table_nane=table_name, column_name=column_name, data_count=data_count, data_list=data_list)
 
 
+# ===============================================
+#
+#           FUNCTION DEFINATION PART
+#
+# ===============================================
 
 def set_sessionid(jsessionid):
     c = {
@@ -104,11 +118,9 @@ def set_sessionid(jsessionid):
 
 def check_set_session():
     if not "jsessionid" in session:
+        print("no session")
         flash("세션 id를 입력해야 합니다.")
-        return redirect("/")
     
-
-
 
 
 

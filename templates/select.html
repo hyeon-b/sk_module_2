@@ -1,13 +1,15 @@
+{% include 'header.html' %}
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HELLO WORLD</title>
+    <title>모듈프로젝트2</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>HELLO WORLD</h1>
+    <h1>BLIND SQL INJECTION</h1>
     <h3>데이터 탈취하기</h3>
     <form action="/table" method="get"class="input-container">
         <button type="submit" id="table_btn">테이블</button>
@@ -23,6 +25,7 @@
     <br>
     <form action="/all_info" method="get"class="input-container">
         <button type="submit" id="all_btn">모든 정보</button>
+        <p>※시간이 오래 소요될 수 있습니다.※</p>
     </form>
 
 </body>
