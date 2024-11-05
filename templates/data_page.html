@@ -8,12 +8,12 @@
 </head>
 <body>
     <h1>HELLO WORLD</h1>
-    <h3>테이블 정보</h3>
-    <p>탈취된 테이블 정보는 다음과 같습니다.</p>
-    <p>항목을 클릭하면 컬럼 정보를 확인할 수 있습니다.</p>
+    <h3>데이터 정보</h3>
+    <p>탈취된 {table_name} 테이블의 {column_name}의 데이터는 다음과 같습니다.</p>
+    <br>
     <ul>
-        {% for i in range(table_count) %}
-            <li a href="/column?table_name={{table_name_list[i]}}">{{table_name_list[i]}}</li>
+        {% for i in range(data_count) %}
+            <li> {{data_list[i]}} </li>
         {% endfor %}
     </ul>
     <br>
