@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELLO WORLD</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>HELLO WORLD</h1>
+    <h3>데이터 탈취하기</h3>
+    
+    <ul>
+        {% for i in range(table_count) %}
+            <li>{{table_name_list[{{i}}] }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
