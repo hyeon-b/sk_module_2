@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, flash, redirect, url_for, ses
 from flask_restful import Resource, Api
 import requests
 from tools.binarySearch import *
-
 # pip install Flask-Session
 
 app=Flask(__name__)
@@ -63,10 +62,6 @@ def select_data():
 def get_table():
     check_set_session()
 
-    # 테스트 데이터
-    table_count=6
-    table_name_list=['BOARD','COMM_FILE','COMM_MDI_FILE','MEMBER','ZIPCODE','ANSWER']
-
     # table_count = get_table_count()
     # table_name_list = get_table_name(table_count)
     
@@ -80,10 +75,6 @@ def get_column():
     table_name = request.args.get('table_name','none') 
     if table_name=='none':
         return render_template("default_column.html")
-
-    # 테스트 데이터
-    # column_count = 1
-    # column_name_list=['ANSWER']
 
     column_count = get_column_count(table_name)
     column_name_list = get_coloumn_name(column_count, table_name)
@@ -101,9 +92,6 @@ def get_data():
 
     data_count = get_data_count(table_name, column_name)
     data_list = get_data_info(table_name, column_name, data_count)
-
-    # data_count=1
-    # data_list=['ant6']
     
     return render_template("data_page.html", table_name=table_name, column_name=column_name, data_count=data_count, data_list=data_list)
 
@@ -150,7 +138,6 @@ def binarySearch(query):
 # ================================
 
 
-
 # 테이블 개수를 구하는 함수
 def get_table_count():
     # query = f"select count(table_name) from user_tables"
@@ -172,8 +159,6 @@ def get_table_name(table_count) :
 
         table_name=""
         for substr in range(1, nth_table_length+1):
-        # 테스트용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        # for substr in range(1, 3):
             get_table_substr_query=f"select ascii(substr(tname,{substr},1)) from (select tname, rownum r from tab) where r={nth_table}"
             table_substr = binarySearch(get_table_substr_query)
 
@@ -182,9 +167,6 @@ def get_table_name(table_count) :
         # table_name_list 리스트에 이름을 저장한다.
         table_name_list.append(table_name)
 
-        # table_name_list[table_name]=None
-
-        # !!!!테스트용!!!!
         print(table_name_list)
     return table_name_list
 
