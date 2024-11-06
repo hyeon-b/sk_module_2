@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template, flash, redirect, url_for, session
-from flask_restful import Resource, Api
+from flask import Flask, request, render_template, flash, redirect, session
 import requests
+
+
 from tools.binarySearch import *
 # pip install Flask-Session
 
 app=Flask(__name__)
-api = Api(app)
 app.secret_key = "flashkey"
 
 u = "https://elms1.skinfosec.co.kr:8082/community6/free"
