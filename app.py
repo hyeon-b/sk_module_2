@@ -41,14 +41,14 @@ def submit():
 
     session["jsessionid"] = jsessionid
 
-    return redirect('/home')
+    return redirect('/select')
 
 
-@app.route("/home", methods=['GET'])
-def home():
-    check_set_session()
+# @app.route("/home", methods=['GET'])
+# def home():
+#     check_set_session()
   
-    return redirect("/select")
+#     return redirect("/select")
 
 @app.route("/select", methods=['GET'])
 def select_data():
