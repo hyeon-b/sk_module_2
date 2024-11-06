@@ -15,7 +15,9 @@
     <ul>
         {% for i in range(table_count) %}
             <li>
-                <a href="/column?table_name={{table_name_list[i]}}">{{ table_name_list[i] }}</a>
+                <a href="/column?table_name={{table_name_list[i]}}">
+                    {{ table_name_list[i] }}
+                </a>
             </li>
         {% endfor %}
     </ul>
