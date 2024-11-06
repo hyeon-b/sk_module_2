@@ -75,7 +75,7 @@ def get_table():
 
 
 @app.route("/column", methods=['GET'])
-async def get_column():
+def get_column():
     check_set_session()
 
     table_name = request.args.get('table_name','none') 
@@ -92,7 +92,7 @@ async def get_column():
     return render_template("column_page.html",table_name=table_name, column_count=column_count, column_name_list=column_name_list)
 
 @app.route("/data", methods=['GET'])
-async def get_data():
+def get_data():
     check_set_session()
     table_name = request.args.get('table_name','none')
     column_name = request.args.get('column_name','none')
