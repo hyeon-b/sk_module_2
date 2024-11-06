@@ -62,8 +62,8 @@ def select_data():
 def get_table():
     check_set_session()
 
-    # table_count = get_table_count()
-    # table_name_list = get_table_name(table_count)
+    table_count = get_table_count()
+    table_name_list = get_table_name(table_count)
     
     return render_template("table_page.html", table_count=table_count, table_name_list=table_name_list)
 
