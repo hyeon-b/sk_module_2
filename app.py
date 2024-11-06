@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, flash, redirect, url_for, ses
 from flask_restful import Resource, Api
 import requests
 from tools.binarySearch import *
-import asyncio
 
 # pip install Flask-Session
 
@@ -149,6 +148,7 @@ def binarySearch(query):
 #        모든 테이블에 대한
 #         컬럼 정보 구하기
 # ================================
+
 
 
 # 테이블 개수를 구하는 함수
