@@ -49,17 +49,13 @@ def submit():
 
 @app.route("/home", methods=['GET'])
 def home():
-    if not "jsessionid" in session:
-        print("no session")
-        flash("세션 id를 입력해야 합니다.")
+    check_set_session()
   
     return redirect("/select")
 
 @app.route("/select", methods=['GET'])
 def select_data():
-    if not "jsessionid" in session:
-        print("no session")
-        flash("세션 id를 입력해야 합니다.")
+    check_set_session()
 
     return render_template("select.html")
 
@@ -70,7 +66,7 @@ def get_table():
 
     # 테스트 데이터
     table_count=6
-    table_name_list=['ANSWER', 'BOARD', 'COMM_FILE', 'COMM_MDI_FILE', 'MEMBER', 'ZIPCODE']
+    table_name_list=['BOARD','COMM_FILE','COMM_MDI_FILE','MEMBER','ZIPCODE','ANSWER']
 
     # table_count = get_table_count()
     # table_name_list = get_table_name(table_count)
