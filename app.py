@@ -129,7 +129,7 @@ def binarySearch(query):
 
 # ================================
 #        모든 테이블에 대한
-#         컬럼 정보 구하기
+#          정보 구하기
 # ================================
 
 
@@ -165,6 +165,11 @@ def get_table_name(table_count) :
         print(table_name_list)
     return table_name_list
 
+
+# ================================
+#        모든 테이블에 대한
+#         컬럼 정보 구하기
+# ================================
 
 def get_column_count(table_name):
     query = f"select count(cname) from col where tname='{table_name}'"
