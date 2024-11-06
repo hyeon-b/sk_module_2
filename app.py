@@ -38,8 +38,7 @@ def index():
 def submit():
     jsessionid = request.form.get('user_input') 
     print(f"{jsessionid}")
-    
-    set_sessionid(jsessionid)
+
     session["jsessionid"] = jsessionid
 
     return redirect('/home')
@@ -53,14 +52,18 @@ def home():
 
 @app.route("/select", methods=['GET'])
 def select_data():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
 
     return render_template("select.html")
 
 
 @app.route("/table", methods=['GET'])
 def get_table():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
 
     table_count = get_table_count()
     table_name_list = get_table_name(table_count)
@@ -70,7 +73,9 @@ def get_table():
 
 @app.route("/column", methods=['GET'])
 def get_column():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
 
     table_name = request.args.get('table_name','none') 
     if table_name=='none':
@@ -83,7 +88,10 @@ def get_column():
 
 @app.route("/data", methods=['GET'])
 def get_data():
-    check_set_session()
+    if not "jsessionid" in session:
+        print("no session")
+        flash("세션 id를 입력해야 합니다.")
+
     table_name = request.args.get('table_name','none')
     column_name = request.args.get('column_name','none')
 
@@ -101,19 +109,6 @@ def get_data():
 #           FUNCTION DEFINATION PART
 #
 # ===============================================
-
-def set_sessionid(jsessionid):
-    c = {
-        "JSESSIONID":jsessionid
-    }
-
-def check_set_session():
-    if not "jsessionid" in session:
-        print("no session")
-        flash("세션 id를 입력해야 합니다.")
-    
-
-
 
 def binarySearch(query):
     start = 1
