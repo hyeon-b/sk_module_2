@@ -1,8 +1,5 @@
 from flask import Flask, request, render_template, flash, redirect, session
 import requests
-
-
-from tools.binarySearch import *
 # pip install Flask-Session
 
 app=Flask(__name__)
